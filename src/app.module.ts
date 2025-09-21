@@ -24,7 +24,7 @@ import { CartModule } from './cart/cart.module';
     PagesModule,
     PageProductsModule,
     CloudinaryModule,
-    UploadModule,
+    // UploadModule,
     CartModule
 
   ],
