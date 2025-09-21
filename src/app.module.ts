@@ -8,6 +8,8 @@ import { AuthModule } from './auth/auth.module';
 import { ProductsModule } from './products/products.module';
 import { PagesModule } from './page-home/page.module';
 import { PageProductsModule } from './page-products/page-products.module';
+import { CloudinaryModule } from './products/cloudinary/cloudinary.module';
+import { UploadModule } from './upload/upload.module';
 
 @Module({
   imports: [
@@ -19,7 +21,9 @@ import { PageProductsModule } from './page-products/page-products.module';
     AuthModule,
     ProductsModule,
     PagesModule,
-    PageProductsModule
+    PageProductsModule,
+    CloudinaryModule,
+    UploadModule
 
   ],
   controllers: [AppController],
