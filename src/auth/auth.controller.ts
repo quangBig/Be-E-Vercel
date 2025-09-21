@@ -14,7 +14,7 @@ export class AuthController {
 
 
     @UseGuards(JwtAuthGuard, RolesGuard)
-    @Role('admin')
+    // @Role('admin')
     @Get('users')
     async getAllUsers() {
         return this.authService.getAllUsers();
