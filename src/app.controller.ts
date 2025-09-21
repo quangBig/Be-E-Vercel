@@ -9,10 +9,8 @@ export class AppController {
   getHello(): string {
     return this.appService.getHello();
   }
-  @Post()
-  saveInfo(@Body() body: any) {
-    return {
-      ...body,
-    }
+  @Get()
+  getRoot() {
+    return { message: '🚀 NestJS API is running on Vercel!' };
   }
 }
