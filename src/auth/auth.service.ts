@@ -20,6 +20,13 @@ export class AuthService {
         private jwtService: JwtService,
     ) { }
 
+    // Lấy danh sách user
+    async getAllUsers() {
+        // Bỏ password khi trả về
+        const users = await this.userModel.find().select('-password').exec();
+        return users;
+    }
+
     // Đăng ký
     async register(createUserDto: CreateUserDto) {
         const { email, password, confirmpassword, name, phonenumber } =

@@ -12,6 +12,14 @@ import { AuthGuard } from '@nestjs/passport';
 export class AuthController {
     constructor(private readonly authService: AuthService) { }
 
+
+    @UseGuards(JwtAuthGuard, RolesGuard)
+    @Role('admin')
+    @Get('users')
+    async getAllUsers() {
+        return this.authService.getAllUsers();
+    }
+
     @Post('register')
     async register(@Body() createUserDto: CreateUserDto) {
         return this.authService.register(createUserDto);
