@@ -4,17 +4,16 @@ import { Readable } from 'stream';
 
 @Injectable()
 export class CloudinaryService {
-    async uploadImage(file: any): Promise<string> {
+    async uploadImage(file: Express.Multer.File): Promise<string> {
         return new Promise((resolve, reject) => {
             const stream = cloudinary.uploader.upload_stream(
-                { folder: 'products' },
+                { folder: 'products', resource_type: 'auto' }, // auto để nhận cả ảnh & video
                 (error, result: UploadApiResponse | undefined) => {
-                    if (error || !result) return reject(error || new Error('No result'));
-                    return resolve(result.secure_url);
+                    if (error || !result) return reject(error || new Error('Upload failed'));
+                    resolve(result.secure_url);
                 },
             );
 
-            // convert file.buffer into a readable stream without using buffer-to-stream
             Readable.from(file.buffer).pipe(stream);
         });
     }
