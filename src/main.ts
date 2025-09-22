@@ -10,18 +10,15 @@ async function bootstrap() {
 
   app.enableCors({
     origin: [
-      "http://localhost:5173",
-      "https://fe-e-vercel.vercel.app"
+      "http://localhost:5173",          // dev local
+      "https://fe-e-vercel.vercel.app"  // FE deploy
     ],
     methods: "GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS",
     allowedHeaders: ["Content-Type", "Authorization"],
-    credentials: true,
-    preflightContinue: false,
-    optionsSuccessStatus: 200,
+    credentials: true
   });
 
   const port = process.env.PORT || 3000;
   await app.listen(port);
-  console.log(`🚀 Server running on http://localhost:${port}`);
 }
 bootstrap();
