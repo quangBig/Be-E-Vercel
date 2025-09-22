@@ -8,11 +8,10 @@ async function bootstrap() {
   app.use(json({ limit: '50mb' }));
   app.use(urlencoded({ extended: true, limit: '50mb' }));
 
-  // 🚀 CORS config
   app.enableCors({
     origin: [
-      "http://localhost:5173",         // để dev
-      "https://fe-e-vercel.vercel.app" // FE deploy
+      "http://localhost:5173",
+      "https://fe-e-vercel.vercel.app"
     ],
     methods: "GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS",
     allowedHeaders: ["Content-Type", "Authorization"],
@@ -23,7 +22,6 @@ async function bootstrap() {
 
   const port = process.env.PORT || 3000;
   await app.listen(port);
-
-  console.log(`🚀 Server is running on http://localhost:${port}`);
+  console.log(`🚀 Server running on http://localhost:${port}`);
 }
 bootstrap();
