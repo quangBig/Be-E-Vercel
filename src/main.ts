@@ -11,7 +11,7 @@ async function bootstrap() {
   app.enableCors({
     origin: [
       "http://localhost:5173",          // dev local
-      "https://fe-e-vercel.vercel.app"  // FE deploy
+      "https://fe-e-vercel-w9x1.vercel.app/"  // FE deploy
     ],
     methods: "GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS",
     allowedHeaders: ["Content-Type", "Authorization"],
