@@ -34,12 +34,7 @@ export declare class AuthService {
     }>;
     login(loginDto: LoginDto): Promise<{
         access_token: string;
-        user: {
-            _id: unknown;
-            name: string;
-            email: string;
-            role: string;
-        };
+        user: any;
     }>;
     validateUser(email: string, pass: string): Promise<any>;
     addPhoneNumber(userId: string, phone: string): Promise<User>;

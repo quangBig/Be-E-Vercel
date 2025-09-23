@@ -6,4 +6,7 @@ export declare class AppController {
     getRoot(): {
         message: string;
     };
+    ping(): {
+        message: string;
+    };
 }

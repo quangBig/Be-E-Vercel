@@ -50,7 +50,7 @@ export class UsersService {
     async findByPhone(phone: string): Promise<User | null> {
         return this.userModel.findOne({ phoneNumber: phone }).exec();
     }
-
+    // thêm các trường về giới tính địa chỉ ngày sinh 
     async updateUser(userId: string, data: Partial<User>): Promise<User> {
         const updatedUser = await this.userModel.findByIdAndUpdate(userId, data, { new: true }).exec();
         if (!updatedUser) {
@@ -58,4 +58,6 @@ export class UsersService {
         }
         return updatedUser;
     }
+
+    // async về sau khi login thì nhập thông tin người dùng
 }

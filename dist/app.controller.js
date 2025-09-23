@@ -23,6 +23,9 @@ let AppController = class AppController {
     getRoot() {
         return { message: '🚀 NestJS API is running on Vercel!' };
     }
+    ping() {
+        return { message: 'pong' };
+    }
 };
 exports.AppController = AppController;
 __decorate([
@@ -37,6 +40,12 @@ __decorate([
     __metadata("design:paramtypes", []),
     __metadata("design:returntype", void 0)
 ], AppController.prototype, "getRoot", null);
+__decorate([
+    (0, common_1.Get)('ping'),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", []),
+    __metadata("design:returntype", void 0)
+], AppController.prototype, "ping", null);
 exports.AppController = AppController = __decorate([
     (0, common_1.Controller)(),
     __metadata("design:paramtypes", [app_service_1.AppService])

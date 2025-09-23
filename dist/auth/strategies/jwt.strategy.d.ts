@@ -1,10 +1,15 @@
+import { Model } from 'mongoose';
+import { User } from 'src/users/schemas/users.schema';
+import { ConfigService } from '@nestjs/config';
 declare const JwtStrategy_base: new (...args: any) => any;
 export declare class JwtStrategy extends JwtStrategy_base {
-    constructor();
-    validate(payload: any): Promise<{
-        userId: any;
-        email: any;
-        name: any;
-    }>;
+    private userModel;
+    private configService;
+    constructor(userModel: Model<User>, configService: ConfigService);
+    validate(payload: any): Promise<(import("mongoose").Document<unknown, {}, User, {}, {}> & User & Required<{
+        _id: unknown;
+    }> & {
+        __v: number;
+    }) | null>;
 }
 export {};

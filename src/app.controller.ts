@@ -13,4 +13,8 @@ export class AppController {
   getRoot() {
     return { message: '🚀 NestJS API is running on Vercel!' };
   }
+  @Get('ping')
+  ping() {
+    return { message: 'pong' };
+  }
 }

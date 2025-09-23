@@ -70,17 +70,17 @@ export class AuthService {
             throw new UnauthorizedException('Invalid credentials');
         }
 
-        const payload = { email: user.email, sub: user._id, role: user.role };
+        const payload = { email: user.email, sub: user._id, role: user.role, name: user.name };
+
+        // Bỏ password ra khỏi object trước khi trả về
+        const { password, ...userWithoutPassword } = user.toObject();
+
         return {
             access_token: this.jwtService.sign(payload),
-            user: {
-                _id: user._id,
-                name: user.name,
-                email: user.email,
-                role: user.role,
-            },
+            user: userWithoutPassword,
         };
     }
+
 
     // Xác thực user từ email + password
     async validateUser(email: string, pass: string): Promise<any> {

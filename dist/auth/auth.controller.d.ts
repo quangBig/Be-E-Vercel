@@ -29,16 +29,14 @@ export declare class AuthController {
     }>;
     login(loginDto: LoginDto): Promise<{
         access_token: string;
-        user: {
-            _id: unknown;
-            name: string;
-            email: string;
-            role: string;
-        };
+        user: any;
     }>;
     getProfile(req: any): any;
     getAdminData(): string;
     countUsers(): Promise<{
         total: number;
     }>;
+    ping(): {
+        message: string;
+    };
 }

@@ -48,4 +48,8 @@ export class AuthController {
         const total = await this.authService.countUsers();
         return { total };
     }
+    @Get('ping')
+    ping() {
+        return { message: 'pong' };
+    }
 }
