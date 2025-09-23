@@ -1,5 +1,7 @@
-import mongoose, { Document } from "mongoose";
-export type OrderDocument = Order & Document;
+import mongoose, { Document, Types } from "mongoose";
+export type OrderDocument = Order & Document & {
+    _id: Types.ObjectId;
+};
 export declare class Order {
     userId: string;
     items: {
@@ -36,11 +38,11 @@ export declare class Order {
     status: string;
 }
 export declare const OrderSchema: mongoose.Schema<Order, mongoose.Model<Order, any, any, any, mongoose.Document<unknown, any, Order, any, {}> & Order & {
-    _id: mongoose.Types.ObjectId;
+    _id: Types.ObjectId;
 } & {
     __v: number;
 }, any>, {}, {}, {}, {}, mongoose.DefaultSchemaOptions, Order, mongoose.Document<unknown, {}, mongoose.FlatRecord<Order>, {}, mongoose.ResolveSchemaOptions<mongoose.DefaultSchemaOptions>> & mongoose.FlatRecord<Order> & {
-    _id: mongoose.Types.ObjectId;
+    _id: Types.ObjectId;
 } & {
     __v: number;
 }>;

@@ -34,7 +34,15 @@ let JwtStrategy = class JwtStrategy extends (0, passport_1.PassportStrategy)(pas
     }
     async validate(payload) {
         const user = await this.userModel.findById(payload.sub).select('-password');
-        return user;
+        if (!user) {
+            throw new common_1.UnauthorizedException('User not found');
+        }
+        return {
+            userId: user._id.toString(),
+            email: user.email,
+            name: user.name,
+            role: user.role,
+        };
     }
 };
 exports.JwtStrategy = JwtStrategy;

@@ -12,9 +12,13 @@ export declare class OrderController {
         totalOrders: any;
         totalAmount: any;
     }>;
-    findOne(id: string): Promise<import("./schemas/orser.schemas").Order>;
+    findOne(id: string): Promise<import("./schemas/orser.schemas").OrderDocument>;
     updateStatus(id: string, status: string): Promise<import("./schemas/orser.schemas").Order>;
     updatePaymentStatus(id: string, status: "pending" | "paid" | "failed", transactionId?: string): Promise<import("./schemas/orser.schemas").Order>;
     cancelOrder(id: string): Promise<import("./schemas/orser.schemas").Order>;
     remove(id: string): Promise<import("./schemas/orser.schemas").Order>;
+    checkout(id: string): Promise<unknown>;
+    momoIpn(body: any): Promise<{
+        message: string;
+    }>;
 }

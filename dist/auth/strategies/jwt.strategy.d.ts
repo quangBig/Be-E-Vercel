@@ -6,10 +6,11 @@ export declare class JwtStrategy extends JwtStrategy_base {
     private userModel;
     private configService;
     constructor(userModel: Model<User>, configService: ConfigService);
-    validate(payload: any): Promise<(import("mongoose").Document<unknown, {}, User, {}, {}> & User & Required<{
-        _id: unknown;
-    }> & {
-        __v: number;
-    }) | null>;
+    validate(payload: any): Promise<{
+        userId: any;
+        email: string;
+        name: string;
+        role: string;
+    }>;
 }
 export {};

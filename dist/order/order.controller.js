@@ -51,6 +51,22 @@ let OrderController = class OrderController {
     async remove(id) {
         return this.orderService.remove(id);
     }
+    async checkout(id) {
+        const order = await this.orderService.findOne(id);
+        if (!order)
+            throw new common_1.NotFoundException("Order not found");
+        return this.orderService.checkout(order._id.toString(), order.total);
+    }
+    async momoIpn(body) {
+        console.log("📩 MoMo callback:", body);
+        if (body.resultCode === 0) {
+            await this.orderService.updatePaymentStatus(body.orderId, "paid", body.transId);
+        }
+        else {
+            await this.orderService.updatePaymentStatus(body.orderId, "failed");
+        }
+        return { message: "IPN received" };
+    }
 };
 exports.OrderController = OrderController;
 __decorate([
@@ -119,6 +135,21 @@ __decorate([
     __metadata("design:paramtypes", [String]),
     __metadata("design:returntype", Promise)
 ], OrderController.prototype, "remove", null);
+__decorate([
+    (0, common_1.Post)("checkout/:id"),
+    (0, common_1.UseGuards)((0, passport_1.AuthGuard)("jwt")),
+    __param(0, (0, common_1.Param)("id")),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String]),
+    __metadata("design:returntype", Promise)
+], OrderController.prototype, "checkout", null);
+__decorate([
+    (0, common_1.Post)("momo-ipn"),
+    __param(0, (0, common_1.Body)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object]),
+    __metadata("design:returntype", Promise)
+], OrderController.prototype, "momoIpn", null);
 exports.OrderController = OrderController = __decorate([
     (0, common_1.Controller)("orders"),
     __metadata("design:paramtypes", [order_service_1.OrderService])

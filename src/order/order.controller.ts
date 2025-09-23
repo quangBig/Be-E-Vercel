@@ -8,6 +8,7 @@ import {
     Delete,
     UseGuards,
     Req,
+    NotFoundException,
 } from "@nestjs/common";
 import { OrderService } from "./order.service";
 import { CreateOrderDto } from "./dto/create-order.dto";
@@ -81,5 +82,32 @@ export class OrderController {
         return this.orderService.remove(id);
     }
 
+    @Post("checkout/:id")
+    @UseGuards(AuthGuard("jwt"))
+    async checkout(@Param("id") id: string) {
+        const order = await this.orderService.findOne(id);
+        if (!order) throw new NotFoundException("Order not found");
+
+        // gọi MoMo
+        return this.orderService.checkout(order._id.toString(), order.total);
+    }
+
+    // IPN callback từ MoMo
+    @Post("momo-ipn")
+    async momoIpn(@Body() body: any) {
+        console.log("📩 MoMo callback:", body);
+
+        if (body.resultCode === 0) {
+            await this.orderService.updatePaymentStatus(
+                body.orderId,
+                "paid",
+                body.transId
+            );
+        } else {
+            await this.orderService.updatePaymentStatus(body.orderId, "failed");
+        }
+
+        return { message: "IPN received" };
+    }
 
 }

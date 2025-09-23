@@ -1,6 +1,7 @@
 import { Injectable, NotFoundException } from "@nestjs/common";
 import { InjectModel } from "@nestjs/mongoose";
 import { Model, Types } from "mongoose";
+import { MomoService } from "src/momo/momo.service";
 
 import { CreateOrderDto } from "./dto/create-order.dto";
 import { Order, OrderDocument } from "./schemas/orser.schemas";
@@ -8,7 +9,9 @@ import { Order, OrderDocument } from "./schemas/orser.schemas";
 @Injectable()
 export class OrderService {
     constructor(
-        @InjectModel(Order.name) private orderModel: Model<OrderDocument>
+        @InjectModel(Order.name)
+        private orderModel: Model<OrderDocument>,
+        private momoService: MomoService
     ) { }
 
     // 🛒 Tạo đơn hàng
@@ -58,7 +61,7 @@ export class OrderService {
     }
 
     // 🔍 Lấy chi tiết 1 đơn
-    async findOne(id: string): Promise<Order> {
+    async findOne(id: string): Promise<OrderDocument> {
         const order = await this.orderModel
             .findById(id)
             .populate("userId", "name email")
@@ -152,5 +155,11 @@ export class OrderService {
             totalAmount: stats[0].totalAmount[0]?.total || 0,
         };
     }
+
+    async checkout(orderId: string, amount: number) {
+        const momoRes = await this.momoService.createPayment(amount, orderId);
+        return momoRes; // trả về cho FE payUrl
+    }
+
 
 }

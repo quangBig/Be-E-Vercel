@@ -10,7 +10,7 @@ import { ConfigService } from '@nestjs/config';
 export class JwtStrategy extends PassportStrategy(Strategy) {
     constructor(
         @InjectModel(User.name) private userModel: Model<User>,
-        private configService: ConfigService,   // 👈 Inject ConfigService
+        private configService: ConfigService,   //  Inject ConfigService
     ) {
         super({
             jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
@@ -21,8 +21,21 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
 
     async validate(payload: any) {
         const user = await this.userModel.findById(payload.sub).select('-password');
-        return user; // trả về object user đầy đủ (trừ password)
+        if (!user) {
+            throw new UnauthorizedException('User not found');
+        }
+
+
+        return {
+            userId: (user._id as any).toString(),  //  ép sang any
+            email: user.email,
+            name: user.name,
+            role: user.role,
+        };
+        // nếu có role thì trả thêm
+
     }
+
 
 
 
