@@ -14,6 +14,7 @@ export declare class PageProductsController {
     }): Promise<import("./schemas/page-products.schema").PageProducts>;
     updateBannerContent(id: string, bannerIndex: number, updateData: any): Promise<import("./schemas/page-products.schema").PageProducts>;
     removeBannerContent(id: string, bannerIndex: number): Promise<import("./schemas/page-products.schema").PageProducts>;
+    removeBannerVideo(id: string, removeVideo?: string): Promise<import("./schemas/page-products.schema").PageProducts>;
     addBannerConnect(id: string, bannerData: any): Promise<import("./schemas/page-products.schema").PageProducts>;
     updateBannerConnect(id: string, index: number, updateData: any): Promise<import("./schemas/page-products.schema").PageProducts>;
     removeBannerConnect(id: string, index: number): Promise<import("./schemas/page-products.schema").PageProducts>;

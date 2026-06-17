@@ -69,6 +69,17 @@ export class PageProductsController {
         return this.pageProductsService.removeBannerContent(id, bannerIndex);
     }
 
+    @Delete(':id/banner')
+    async removeBannerVideo(
+        @Param('id') id: string,
+        @Query('removeVideo') removeVideo?: string,
+    ) {
+        if (removeVideo === 'true') {
+            return this.pageProductsService.removeBannerVideo(id);
+        }
+        throw new Error('Invalid query parameters for deleting banner content');
+    }
+
     @Post(":id/banner-connect")
     addBannerConnect(@Param("id") id: string, @Body() bannerData: any) {
         return this.pageProductsService.addBannerConnect(id, bannerData);

@@ -121,6 +121,14 @@ let PageProductsService = class PageProductsService {
         page.bannerContent.splice(bannerIndex, 1);
         return page.save();
     }
+    async removeBannerVideo(id) {
+        const page = await this.pageProductsModel.findById(id).exec();
+        if (!page) {
+            throw new Error(`PageProducts with id ${id} not found`);
+        }
+        page.bannerVideo = undefined;
+        return page.save();
+    }
     async addBannerConnect(id, bannerData) {
         const page = await this.pageProductsModel.findById(id).exec();
         if (!page) {

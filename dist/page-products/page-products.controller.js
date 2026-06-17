@@ -45,6 +45,12 @@ let PageProductsController = class PageProductsController {
     async removeBannerContent(id, bannerIndex) {
         return this.pageProductsService.removeBannerContent(id, bannerIndex);
     }
+    async removeBannerVideo(id, removeVideo) {
+        if (removeVideo === 'true') {
+            return this.pageProductsService.removeBannerVideo(id);
+        }
+        throw new Error('Invalid query parameters for deleting banner content');
+    }
     addBannerConnect(id, bannerData) {
         return this.pageProductsService.addBannerConnect(id, bannerData);
     }
@@ -116,6 +122,14 @@ __decorate([
     __metadata("design:paramtypes", [String, Number]),
     __metadata("design:returntype", Promise)
 ], PageProductsController.prototype, "removeBannerContent", null);
+__decorate([
+    (0, common_1.Delete)(':id/banner'),
+    __param(0, (0, common_1.Param)('id')),
+    __param(1, (0, common_1.Query)('removeVideo')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String, String]),
+    __metadata("design:returntype", Promise)
+], PageProductsController.prototype, "removeBannerVideo", null);
 __decorate([
     (0, common_1.Post)(":id/banner-connect"),
     __param(0, (0, common_1.Param)("id")),

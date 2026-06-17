@@ -147,6 +147,15 @@ export class PageProductsService {
         return page.save();
     }
 
+    async removeBannerVideo(id: string): Promise<PageProducts> {
+        const page = await this.pageProductsModel.findById(id).exec();
+        if (!page) {
+            throw new Error(`PageProducts with id ${id} not found`);
+        }
+        page.bannerVideo = undefined;
+        return page.save();
+    }
+
     // ------------------ Banner Connect -------------------
 
     async addBannerConnect(

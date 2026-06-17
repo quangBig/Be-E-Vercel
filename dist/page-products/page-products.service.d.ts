@@ -15,6 +15,7 @@ export declare class PageProductsService {
     }): Promise<PageProducts>;
     updateBannerContent(id: string, bannerIndex: number, updateData: any): Promise<PageProducts>;
     removeBannerContent(id: string, bannerIndex: number): Promise<PageProducts>;
+    removeBannerVideo(id: string): Promise<PageProducts>;
     addBannerConnect(id: string, bannerData: any): Promise<PageProducts>;
     updateBannerConnect(id: string, bannerIndex: number, updateData: any): Promise<PageProducts>;
     removeBannerConnect(id: string, bannerIndex: number): Promise<PageProducts>;
