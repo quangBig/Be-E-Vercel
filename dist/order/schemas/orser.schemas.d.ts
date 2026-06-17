@@ -27,7 +27,7 @@ export declare class Order {
         wardName: string;
     };
     payment: {
-        method: "cod" | "momo";
+        method: "cod" | "vnpay";
         status: "pending" | "paid" | "failed";
         transactionId?: string;
     };

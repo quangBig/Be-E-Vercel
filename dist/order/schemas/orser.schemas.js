@@ -67,7 +67,7 @@ __decorate([
 __decorate([
     (0, mongoose_1.Prop)({
         type: {
-            method: { type: String, enum: ["cod", "momo"], default: "cod" },
+            method: { type: String, enum: ["cod", "vnpay"], default: "cod" },
             status: { type: String, enum: ["pending", "paid", "failed"], default: "pending" },
             transactionId: { type: String },
         },

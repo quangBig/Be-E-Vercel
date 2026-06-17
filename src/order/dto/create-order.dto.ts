@@ -34,7 +34,7 @@ export class CreateOrderDto {
 
     @IsOptional()
     payment?: {
-        method: "cod" | "momo";
+        method: "cod" | "vnpay";
         status: "pending" | "paid" | "failed";
     };
 }

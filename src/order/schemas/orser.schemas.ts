@@ -64,14 +64,14 @@ export class Order {
     // 💳 Thông tin thanh toán
     @Prop({
         type: {
-            method: { type: String, enum: ["cod", "momo"], default: "cod" },
+            method: { type: String, enum: ["cod", "vnpay"], default: "cod" },
             status: { type: String, enum: ["pending", "paid", "failed"], default: "pending" },
             transactionId: { type: String }, // nếu thanh toán online thì có
         },
         required: true,
     })
     payment: {
-        method: "cod" | "momo";
+        method: "cod" | "vnpay";
         status: "pending" | "paid" | "failed";
         transactionId?: string;
     };

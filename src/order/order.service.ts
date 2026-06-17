@@ -1,7 +1,7 @@
 import { Injectable, NotFoundException } from "@nestjs/common";
 import { InjectModel } from "@nestjs/mongoose";
-import { Model, Types } from "mongoose";
-import { MomoService } from "src/momo/momo.service";
+import { VnpayService } from "src/vnpay/vnpay.service";
+import { Model } from "mongoose";
 
 import { CreateOrderDto } from "./dto/create-order.dto";
 import { Order, OrderDocument } from "./schemas/orser.schemas";
@@ -11,7 +11,7 @@ export class OrderService {
     constructor(
         @InjectModel(Order.name)
         private orderModel: Model<OrderDocument>,
-        private momoService: MomoService
+        private vnpayService: VnpayService
     ) { }
 
     // 🛒 Tạo đơn hàng
@@ -156,9 +156,12 @@ export class OrderService {
         };
     }
 
-    async checkout(orderId: string, amount: number) {
-        const momoRes = await this.momoService.createPayment(amount, orderId);
-        return momoRes; // trả về cho FE payUrl
+    async checkout(orderId: string, amount: number, paymentMethod: string, ipAddress?: string) {
+        if (paymentMethod === "vnpay") {
+            const payUrl = await this.vnpayService.createPayment(amount, orderId, ipAddress || "127.0.0.1");
+            return { payUrl };
+        }
+        throw new Error("Unsupported payment method: " + paymentMethod);
     }
 
 

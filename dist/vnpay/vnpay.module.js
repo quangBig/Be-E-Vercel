@@ -6,18 +6,18 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.MomoModule = void 0;
+exports.VnpayModule = void 0;
 const common_1 = require("@nestjs/common");
-const momo_service_1 = require("./momo.service");
 const config_1 = require("@nestjs/config");
-let MomoModule = class MomoModule {
+const vnpay_service_1 = require("./vnpay.service");
+let VnpayModule = class VnpayModule {
 };
-exports.MomoModule = MomoModule;
-exports.MomoModule = MomoModule = __decorate([
+exports.VnpayModule = VnpayModule;
+exports.VnpayModule = VnpayModule = __decorate([
     (0, common_1.Module)({
         imports: [config_1.ConfigModule],
-        providers: [momo_service_1.MomoService],
-        exports: [momo_service_1.MomoService],
+        providers: [vnpay_service_1.VnpayService],
+        exports: [vnpay_service_1.VnpayService],
     })
-], MomoModule);
-//# sourceMappingURL=momo.module.js.map
+], VnpayModule);
+//# sourceMappingURL=vnpay.module.js.map

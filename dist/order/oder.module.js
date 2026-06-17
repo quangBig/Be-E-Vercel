@@ -11,7 +11,7 @@ const common_1 = require("@nestjs/common");
 const mongoose_1 = require("@nestjs/mongoose");
 const order_service_1 = require("./order.service");
 const order_controller_1 = require("./order.controller");
-const momo_module_1 = require("../momo/momo.module");
+const vnpay_module_1 = require("../vnpay/vnpay.module");
 const orser_schemas_1 = require("./schemas/orser.schemas");
 let OrderModule = class OrderModule {
 };
@@ -20,7 +20,7 @@ exports.OrderModule = OrderModule = __decorate([
     (0, common_1.Module)({
         imports: [
             mongoose_1.MongooseModule.forFeature([{ name: orser_schemas_1.Order.name, schema: orser_schemas_1.OrderSchema }]),
-            momo_module_1.MomoModule,
+            vnpay_module_1.VnpayModule,
         ],
         controllers: [order_controller_1.OrderController],
         providers: [order_service_1.OrderService],

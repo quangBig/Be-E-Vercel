@@ -1,11 +1,11 @@
+import { VnpayService } from "src/vnpay/vnpay.service";
 import { Model } from "mongoose";
-import { MomoService } from "src/momo/momo.service";
 import { CreateOrderDto } from "./dto/create-order.dto";
 import { Order, OrderDocument } from "./schemas/orser.schemas";
 export declare class OrderService {
     private orderModel;
-    private momoService;
-    constructor(orderModel: Model<OrderDocument>, momoService: MomoService);
+    private vnpayService;
+    constructor(orderModel: Model<OrderDocument>, vnpayService: VnpayService);
     create(dto: CreateOrderDto, userId: string): Promise<Order>;
     findAll(): Promise<Order[]>;
     findByUser(userId: string): Promise<Order[]>;
@@ -20,5 +20,7 @@ export declare class OrderService {
         totalOrders: any;
         totalAmount: any;
     }>;
-    checkout(orderId: string, amount: number): Promise<unknown>;
+    checkout(orderId: string, amount: number, paymentMethod: string, ipAddress?: string): Promise<{
+        payUrl: string;
+    }>;
 }

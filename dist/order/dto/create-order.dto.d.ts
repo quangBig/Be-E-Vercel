@@ -23,7 +23,7 @@ export declare class CreateOrderDto {
     };
     note?: string;
     payment?: {
-        method: "cod" | "momo";
+        method: "cod" | "vnpay";
         status: "pending" | "paid" | "failed";
     };
 }

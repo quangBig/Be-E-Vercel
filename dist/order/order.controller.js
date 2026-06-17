@@ -17,10 +17,13 @@ const common_1 = require("@nestjs/common");
 const order_service_1 = require("./order.service");
 const create_order_dto_1 = require("./dto/create-order.dto");
 const passport_1 = require("@nestjs/passport");
+const vnpay_service_1 = require("../vnpay/vnpay.service");
 let OrderController = class OrderController {
     orderService;
-    constructor(orderService) {
+    vnpayService;
+    constructor(orderService, vnpayService) {
         this.orderService = orderService;
+        this.vnpayService = vnpayService;
     }
     async create(dto, req) {
         console.log("User trong req:", req.user);
@@ -51,21 +54,45 @@ let OrderController = class OrderController {
     async remove(id) {
         return this.orderService.remove(id);
     }
-    async checkout(id) {
+    async checkout(id, req) {
         const order = await this.orderService.findOne(id);
         if (!order)
             throw new common_1.NotFoundException("Order not found");
-        return this.orderService.checkout(order._id.toString(), order.total);
+        const ipAddr = req.ip || req.headers["x-forwarded-for"] || req.socket.remoteAddress || "127.0.0.1";
+        return this.orderService.checkout(order._id.toString(), order.total, order.payment.method, ipAddr);
     }
-    async momoIpn(body) {
-        console.log("📩 MoMo callback:", body);
-        if (body.resultCode === 0) {
-            await this.orderService.updatePaymentStatus(body.orderId, "paid", body.transId);
+    async vnpayIpn(query) {
+        console.log("📩 VNPay callback IPN:", query);
+        const isValid = this.vnpayService.verifySignature(query);
+        if (!isValid) {
+            return { RspCode: "97", Message: "Checksum failed" };
         }
-        else {
-            await this.orderService.updatePaymentStatus(body.orderId, "failed");
+        const orderId = query['vnp_TxnRef'];
+        const responseCode = query['vnp_ResponseCode'];
+        const transactionNo = query['vnp_TransactionNo'];
+        const amount = Number(query['vnp_Amount']) / 100;
+        try {
+            const order = await this.orderService.findOne(orderId);
+            if (!order) {
+                return { RspCode: "01", Message: "Order not found" };
+            }
+            if (order.total !== amount) {
+                return { RspCode: "04", Message: "Invalid amount" };
+            }
+            if (order.payment.status !== "pending") {
+                return { RspCode: "02", Message: "Order already confirmed" };
+            }
+            if (responseCode === "00") {
+                await this.orderService.updatePaymentStatus(orderId, "paid", transactionNo);
+            }
+            else {
+                await this.orderService.updatePaymentStatus(orderId, "failed", transactionNo);
+            }
+            return { RspCode: "00", Message: "Confirm success" };
         }
-        return { message: "IPN received" };
+        catch (error) {
+            return { RspCode: "99", Message: error.message || "Unknown error" };
+        }
     }
 };
 exports.OrderController = OrderController;
@@ -139,19 +166,21 @@ __decorate([
     (0, common_1.Post)("checkout/:id"),
     (0, common_1.UseGuards)((0, passport_1.AuthGuard)("jwt")),
     __param(0, (0, common_1.Param)("id")),
+    __param(1, (0, common_1.Req)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [String]),
+    __metadata("design:paramtypes", [String, Object]),
     __metadata("design:returntype", Promise)
 ], OrderController.prototype, "checkout", null);
 __decorate([
-    (0, common_1.Post)("momo-ipn"),
-    __param(0, (0, common_1.Body)()),
+    (0, common_1.Get)("vnpay-ipn"),
+    __param(0, (0, common_1.Query)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Object]),
     __metadata("design:returntype", Promise)
-], OrderController.prototype, "momoIpn", null);
+], OrderController.prototype, "vnpayIpn", null);
 exports.OrderController = OrderController = __decorate([
     (0, common_1.Controller)("orders"),
-    __metadata("design:paramtypes", [order_service_1.OrderService])
+    __metadata("design:paramtypes", [order_service_1.OrderService,
+        vnpay_service_1.VnpayService])
 ], OrderController);
 //# sourceMappingURL=order.controller.js.map

@@ -15,15 +15,15 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.OrderService = void 0;
 const common_1 = require("@nestjs/common");
 const mongoose_1 = require("@nestjs/mongoose");
+const vnpay_service_1 = require("../vnpay/vnpay.service");
 const mongoose_2 = require("mongoose");
-const momo_service_1 = require("../momo/momo.service");
 const orser_schemas_1 = require("./schemas/orser.schemas");
 let OrderService = class OrderService {
     orderModel;
-    momoService;
-    constructor(orderModel, momoService) {
+    vnpayService;
+    constructor(orderModel, vnpayService) {
         this.orderModel = orderModel;
-        this.momoService = momoService;
+        this.vnpayService = vnpayService;
     }
     async create(dto, userId) {
         if (!userId) {
@@ -131,9 +131,12 @@ let OrderService = class OrderService {
             totalAmount: stats[0].totalAmount[0]?.total || 0,
         };
     }
-    async checkout(orderId, amount) {
-        const momoRes = await this.momoService.createPayment(amount, orderId);
-        return momoRes;
+    async checkout(orderId, amount, paymentMethod, ipAddress) {
+        if (paymentMethod === "vnpay") {
+            const payUrl = await this.vnpayService.createPayment(amount, orderId, ipAddress || "127.0.0.1");
+            return { payUrl };
+        }
+        throw new Error("Unsupported payment method: " + paymentMethod);
     }
 };
 exports.OrderService = OrderService;
@@ -141,6 +144,6 @@ exports.OrderService = OrderService = __decorate([
     (0, common_1.Injectable)(),
     __param(0, (0, mongoose_1.InjectModel)(orser_schemas_1.Order.name)),
     __metadata("design:paramtypes", [mongoose_2.Model,
-        momo_service_1.MomoService])
+        vnpay_service_1.VnpayService])
 ], OrderService);
 //# sourceMappingURL=order.service.js.map

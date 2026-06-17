@@ -3,13 +3,13 @@ import { MongooseModule } from "@nestjs/mongoose";
 
 import { OrderService } from "./order.service";
 import { OrderController } from "./order.controller";
-import { MomoModule } from "src/momo/momo.module"; //  import MomoModule
+import { VnpayModule } from "src/vnpay/vnpay.module";
 import { Order, OrderSchema } from "./schemas/orser.schemas";
 
 @Module({
     imports: [
         MongooseModule.forFeature([{ name: Order.name, schema: OrderSchema }]),
-        MomoModule,
+        VnpayModule,
     ],
     controllers: [OrderController],
     providers: [OrderService],

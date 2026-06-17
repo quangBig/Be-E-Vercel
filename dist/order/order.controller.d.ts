@@ -1,8 +1,10 @@
 import { OrderService } from "./order.service";
 import { CreateOrderDto } from "./dto/create-order.dto";
+import { VnpayService } from "src/vnpay/vnpay.service";
 export declare class OrderController {
     private readonly orderService;
-    constructor(orderService: OrderService);
+    private readonly vnpayService;
+    constructor(orderService: OrderService, vnpayService: VnpayService);
     create(dto: CreateOrderDto, req: any): Promise<import("./schemas/orser.schemas").Order>;
     findAll(): Promise<import("./schemas/orser.schemas").Order[]>;
     findByUser(userId: string): Promise<import("./schemas/orser.schemas").Order[]>;
@@ -17,8 +19,11 @@ export declare class OrderController {
     updatePaymentStatus(id: string, status: "pending" | "paid" | "failed", transactionId?: string): Promise<import("./schemas/orser.schemas").Order>;
     cancelOrder(id: string): Promise<import("./schemas/orser.schemas").Order>;
     remove(id: string): Promise<import("./schemas/orser.schemas").Order>;
-    checkout(id: string): Promise<unknown>;
-    momoIpn(body: any): Promise<{
-        message: string;
+    checkout(id: string, req: any): Promise<{
+        payUrl: string;
+    }>;
+    vnpayIpn(query: any): Promise<{
+        RspCode: string;
+        Message: any;
     }>;
 }
